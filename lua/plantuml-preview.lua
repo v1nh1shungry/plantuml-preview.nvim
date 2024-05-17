@@ -12,6 +12,7 @@ local config = {
   win_opts = {
     split = 'right',
     win = 0,
+    style = 'minimal',
   },
 }
 
@@ -146,10 +147,6 @@ function M.toggle()
         end
         if opts.winnr == nil or not vim.api.nvim_win_is_valid(opts.winnr) then
           opts.winnr = vim.api.nvim_open_win(opts.bufnr, false, config.win_opts)
-          vim.wo[opts.winnr].stc = ''
-          vim.wo[opts.winnr].number = false
-          vim.wo[opts.winnr].relativenumber = false
-          vim.wo[opts.winnr].foldenable = false
         end
         vim.api.nvim_buf_set_lines(opts.bufnr, 0, -1, false, vim.split(result, '\n'))
       end)

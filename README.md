@@ -40,6 +40,7 @@ service, so you have to be connected. Thus, it may be unsafe.**
     win_opts = { -- config which will be passed to `vim.api.nvim_open_win`
         split = 'right',
         win = 0,
+        style = 'minimal',
     },
 }
 ```
