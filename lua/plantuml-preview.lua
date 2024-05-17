@@ -15,21 +15,11 @@ local config = {
   },
 }
 
----@param s string
----@return string
-local function hex_string(s)
-  local res = ''
-  for i = 1, #s do
-    res = res .. string.format('%02x', s:byte(i))
-  end
-  return res
-end
-
 ---@param src string
 ---@param callback fun(string)
 ---@return vim.SystemObj
 local function get_preview(src, callback)
-  local url = 'https://www.plantuml.com/plantuml/txt/~h' .. hex_string(src)
+  local url = 'https://www.plantuml.com/plantuml/txt/~h' .. vim.text.hexencode(src)
   return vim.system(
     { 'curl', url },
     { text = true },

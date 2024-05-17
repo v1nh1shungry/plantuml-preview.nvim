@@ -14,6 +14,8 @@ service, so you have to be connected. Thus, it may be unsafe.**
 
 ## 📦 Installation
 
+**Require Neovim >= 0.11**
+
 💤 [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
