@@ -167,7 +167,7 @@ function M.toggle()
       cancel()
     else
       update()
-      vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged' }, {
+      vim.api.nvim_create_autocmd({ 'InsertLeave', 'CursorHold', 'BufWrite' }, {
         callback = update,
         group = augroup,
       })
