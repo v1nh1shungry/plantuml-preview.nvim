@@ -11,7 +11,6 @@ local config = {
   },
   win_opts = {
     split = 'right',
-    win = 0,
     style = 'minimal',
   },
 }
@@ -133,6 +132,9 @@ function M.toggle()
       { title = 'plantuml-preview' }
     )
   elseif vim.fn.expand('%:e') == 'puml' then
+    local current_bufnr = vim.api.nvim_get_current_buf()
+    local current_winnr = vim.api.nvim_get_current_win()
+
     local function cancel()
       if opts.job ~= nil and not opts.job:is_closing() then
         opts.job:kill(9)
@@ -141,15 +143,22 @@ function M.toggle()
 
     local update = function()
       cancel()
-      opts.job = get_preview(table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), '\n'), function(result)
-        if opts.bufnr == nil or not vim.api.nvim_buf_is_valid(opts.bufnr) then
-          opts.bufnr = vim.api.nvim_create_buf(false, true)
+      opts.job = get_preview(
+        table.concat(vim.api.nvim_buf_get_lines(current_bufnr, 0, -1, false), '\n'),
+        function(result)
+          if opts.bufnr == nil or not vim.api.nvim_buf_is_valid(opts.bufnr) then
+            opts.bufnr = vim.api.nvim_create_buf(false, true)
+          end
+          if opts.winnr == nil or not vim.api.nvim_win_is_valid(opts.winnr) then
+            opts.winnr = vim.api.nvim_open_win(
+              opts.bufnr,
+              false,
+              vim.tbl_extend('force', { win = current_winnr }, config.win_opts)
+            )
+          end
+          vim.api.nvim_buf_set_lines(opts.bufnr, 0, -1, false, vim.split(result, '\n'))
         end
-        if opts.winnr == nil or not vim.api.nvim_win_is_valid(opts.winnr) then
-          opts.winnr = vim.api.nvim_open_win(opts.bufnr, false, config.win_opts)
-        end
-        vim.api.nvim_buf_set_lines(opts.bufnr, 0, -1, false, vim.split(result, '\n'))
-      end)
+      )
     end
 
     if opts.winnr ~= nil and vim.api.nvim_win_is_valid(opts.winnr) then
