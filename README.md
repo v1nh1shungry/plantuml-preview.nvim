@@ -44,4 +44,4 @@ service, so you have to be connected. Thus, it may be unsafe.**
 
 ## 🚀 Usage
 
-* `toggle()`: toggle the preview panel (can't toggle the inline preview of markdown for now, which is in my plan)
+* `toggle()`: toggle the preview
